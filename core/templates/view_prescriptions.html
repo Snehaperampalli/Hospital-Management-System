@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>View Your Prescriptions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>Prescriptions</h2>
+    <ul>
+        {% for prescription in prescriptions %}
+        <li>
+            Prescription for {{ prescription.patient.user.get_full_name }} by Dr. {{ prescription.doctor.user.get_full_name }} - Medicine: {{ prescription.medicine }}
+            {% if request.user == prescription.patient.user %}
+            <a href="{% url 'delete_prescription' prescription.id %}">Delete</a>
+            {% endif %}
+        </li>
+        {% empty %}
+        <li>No prescriptions available.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'patient_dashboard' %}">Back to Dashboard</a>
+</body>
+</html>

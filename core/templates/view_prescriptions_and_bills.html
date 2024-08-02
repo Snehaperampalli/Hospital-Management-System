@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Prescriptions and Bills</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+  <h2>Prescriptions</h2>
+  <ul>
+    {% for prescription in prescriptions %}
+      <li>
+        Prescription for {{ prescription.patient.user.get_full_name }} by Dr. {{ prescription.doctor.user.get_full_name }} - Medicine:  {{ prescription.medicine }} -
+        Created on: {{ prescription.created_at|date:"DATETIME_FORMAT" }}
+        <a href="{% url 'generate_bill' prescription.id %}">Generate Bill</a>
+        {% if request.user.is_staff %}
+          <a href="{% url 'delete_prescription' prescription.id %}">Delete</a>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>No prescriptions available.</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Bills</h2>
+  <ul>
+    {% for bill in bills %}
+      <li>{{ bill.description }} - Amount: {{ bill.amount }}
+        <a href="{% url 'delete_bill' bill.id %}">Delete</a>
+      </li>
+    {% empty %}
+      <li>No bills available.</li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'staff_dashboard' %}">Back to Dashboard</a>
+</body>
+</html>

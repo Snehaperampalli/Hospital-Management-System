@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>Your Appointments</h2>
+    <ul>
+        {% for appointment in appointments %}
+            <li>{{ appointment.doctor.user.get_full_name }} - {{ appointment.date }} - {{ appointment.status }}
+                <a href="{% url 'delete_appointment' appointment.id %}">Delete</a>
+            </li>
+        {% empty %}
+            <li>No appointments scheduled.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'book_appointment' %}">Book Appointment</a>
+
+    <h2>Your Prescriptions</h2>
+    <ul>
+        <li><a href="{% url 'view_prescriptions' %}">View Prescriptions</a></li>
+    </ul>
+
+    <h2>Your Bills</h2>
+    <ul>
+        {% for bill in bills %}
+            <li>{{ bill.description }} - Amount: {{ bill.amount }}
+                <a href="{% url 'delete_bill' bill.id %}">Delete</a>
+            </li>
+        {% empty %}
+            <li>No bills generated.</li>
+        {% endfor %}
+    </ul>
+
+    <ul>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+</body>
+</html>

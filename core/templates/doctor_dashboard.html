@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        form {
+            display: inline-block;
+            margin-left: 10px;
+        }
+        button[type="submit"], input[type="datetime-local"] {
+            padding: 8px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        input[type="datetime-local"] {
+            width: 200px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>Appointments</h2>
+    <ul>
+        {% for appointment in appointments %}
+            <li>
+                {{ appointment.patient.user.get_full_name }} - {{ appointment.date }} - {{ appointment.status }}
+                <form method="post" action="{% url 'manage_appointments' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="appointment_id" value="{{ appointment.id }}">
+                    <button type="submit" name="action" value="Accept">Accept</button>
+                    <button type="submit" name="action" value="Cancel">Cancel</button>
+                    <button type="submit" name="action" value="Complete">Complete</button>
+                    <input type="datetime-local" name="new_date">
+                    <button type="submit" name="action" value="Reschedule">Reschedule</button>
+                </form>
+                | <a href="{% url 'manage_prescriptions' appointment.patient.id %}">Manage Prescriptions</a> |
+                <a href="{% url 'delete_appointment' appointment.id %}">Delete</a>
+            </li>
+        {% empty %}
+            <li>No appointments found.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html>

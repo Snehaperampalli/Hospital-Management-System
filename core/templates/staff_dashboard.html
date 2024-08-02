@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        button[type="submit"] {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button[type="submit"]:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+  
+  <h1>Welcome, {{ user.get_full_name }}!</h1>
+
+  <h2>Inventory</h2>
+  <ul>
+    {% for inventory in inventories %}
+      <li>{{ inventory.item_name }} - Quantity: {{ inventory.quantity }}
+        <a href="{% url 'update_inventory' inventory.id %}">Update</a>
+        <form method="post" action="{% url 'delete_inventory' inventory.id %}">
+          {% csrf_token %}
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    {% empty %}
+      <li>No inventory items.</li>
+    {% endfor %}
+    <li><a href="{% url 'add_inventory' %}">Add New Inventory Item</a></li>
+  </ul>
+
+  <h2>Doctors</h2>
+  <ul>
+    {% for doctor in doctors %}
+      <li>{{ doctor.user.get_full_name }} - {{ doctor.specialty }}
+        <form method="post" action="{% url 'delete_doctor' doctor.id %}">
+          {% csrf_token %}
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    {% empty %}
+      <li>No doctors available.</li>
+    {% endfor %}
+    <li><a href="{% url 'add_doctor' %}">Add New Doctor</a></li>
+  </ul>
+
+  <h2>Staff</h2>
+  <ul>
+    {% for staff_member in staff %}
+      <li>{{ staff_member.user.get_full_name }} - {{ staff_member.role }}
+        <form method="post" action="{% url 'delete_staff' staff_member.id %}">
+          {% csrf_token %}
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    {% empty %}
+      <li>No staff members available.</li>
+    {% endfor %}
+    <li><a href="{% url 'add_staff' %}">Add New Staff Member</a></li>
+  </ul>
+
+  <h2>View Prescriptions and Bills</h2>
+  <ul>
+    <li><a href="{% url 'view_prescriptions_and_bills' %}">View All Prescriptions and Bills</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="{% url 'logout' %}">Logout</a></li>
+  </ul>
+</body>
+</html>

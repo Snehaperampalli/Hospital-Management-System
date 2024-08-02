@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        main {
+            padding: 40px;
+            text-align: center;
+        }
+        main p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        ul li {
+            margin: 15px 0; /* Added margin to create gap between options */
+        }
+        ul li a {
+            text-decoration: none;
+            color: white;
+            background-color: #4CAF50;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            display: block;
+            width: 200px;
+            text-align: center;
+        }
+        ul li a:hover {
+            background-color: #2e7d32;
+        }
+        footer {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Hospital Management System</h1>
+    </header>
+    <main>
+        <p>Explore the system features:</p>
+        <ul>
+            <li><a href="{% url 'register_patient' %}">Register as a Patient</a></li>
+            <li><a href="{% url 'register_doctor' %}">Register as a Doctor</a></li>
+            <li><a href="{% url 'register_staff' %}">Register as a Staff Member</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+        </ul>
+    </main>
+    <footer>
+        <p>&copy; 2024 Hospital Management System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Prescriptions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        form {
+            margin-top: 10px;
+        }
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manage Prescriptions for {{ patient.user.get_full_name }}</h1>
+
+    <h2>Existing Prescriptions</h2>
+    <ul>
+        {% for prescription in prescriptions %}
+            <li>
+                Medicine: {{ prescription.medicine }} - Dosage: {{ prescription.dosage }}
+                <a href="{% url 'update_prescription' prescription.id %}">Update</a> |
+                <form method="post" action="{% url 'manage_prescriptions' patient.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="prescription_id" value="{{ prescription.id }}">
+                    <input type="hidden" name="action" value="delete">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% empty %}
+            <li>No prescriptions found.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Create New Prescription</h2>
+    <form method="post" action="{% url 'manage_prescriptions' patient.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="action" value="create">
+        <button type="submit">Create Prescription</button>
+    </form>
+
+    <a href="{% url 'doctor_dashboard' %}">Back to Dashboard</a>
+</body>
+</html>
